@@ -9,3 +9,9 @@ lucene 从 4+版本后开始大量使用的数据结构是 FST。FST 有两个�
 - 2、查询速度快。O(len(str))的查询时间复杂度。
 
 ![屏幕快照 2022-02-04 下午3 55 36](https://user-images.githubusercontent.com/40445471/152492366-1e0ec5a1-77cd-4a99-a473-d23fee31f2b3.png)
+
+### elasticsearch是如何实现master选举的
+master选举的三条规则
+- 对所有可以成为master的节点根据nodeId排序，每次选举每个节点都把自己所知道节点排一次序，然后选出第一个（第0位）节点，暂且认为它是master节点。
+- 如果对某个节点的投票数达到一定的值（可以成为master节点数n/2+1）并且该节点自己也选举自己，那这个节点就是master。否则重新选举。
+- 对于脑裂问题，需要把候选master节点最小值设置为可以成为master节点数n/2+1（quorum ）
