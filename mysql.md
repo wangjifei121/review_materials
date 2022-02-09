@@ -1,5 +1,3 @@
-## Mysql面试题
-
 ### MySql存储引擎种类
 - 可通过`SHOW ENGINES;`查看mysql支持的存储引擎,总计支持9种，其中常见的为`MyISAM`和`InnoDB`两种
 
