@@ -86,3 +86,52 @@ mysql>
 
 - varchar与char的区别 char是一种固定长度的类型，varchar则是一种可变长度的类型  
 - varchar(50)中50的涵义 最多存放50个字符，varchar(50)和(200)存储hello所占空间一样，但后者在排序时会消耗更多内存，因为order by col采用fixed_length计算col长度(memory引擎也一样) 
+
+### Mysql日志文件种类
+- 错误日志(error log)
+查看错误日志 `show variables like 'log_error';`，默认情况下以服务器的主机名命名`hostname`.err，可以通过参数--log-error=[file_name]指定
+```
+mysql> show variables like 'log_error';
++---------------+---------------------+
+| Variable_name | Value               |
++---------------+---------------------+
+| log_error     | /var/log/mysqld.log |
++---------------+---------------------+
+1 row in set (0.07 sec)
+
+mysql> 
+mysql> ps -ef|grep mysql
+mysql    11005  0.0  0.7 3477144 470428 ?      Sl    2020 319:54 /usr/local/mysql/bin/mysqld --basedir=/usr/local/mysql --datadir=/var/lib/mysql --plugin-dir=/usr/local/mysql/lib/plugin --user=mysql --log-error=/var/log/mysqld.log --pid-file=/var/lib/mysql/server348.pid --socket=/var/lib/mysql/mysql.sock
+mysql> 
+```
+- 查询日志(general log)
+    查询日志分为一般查询日志和慢查询日志，通过参数long_query_time指定时间的值对其进行判定，如果在参数设定时间内完成查询，则为一般查询日志（建议关闭，因为太多），否则为慢查询日志。
+- 慢查询日志日志(slow query log)
+    查询超出变量 long_query_time 指定时间值的为慢查询。mysql记录慢查询日志是在查询执行完毕且已经完全释放锁之后才记录的，因此慢查询日志记录的顺序和执行的SQL查询语句顺序可能会不一致
+    查看慢查询日志：`show variables like '%slow_query_log%';`
+    开启慢查询方式：
+    ```
+    # 方式一：配置文件设置
+    [mysqld]
+    slow_query_log=ON # 是否开启慢查询
+    slow_query_log_file=/usr/local/mysql/data/slow.log     # 指定慢查询日志路径
+    long_query_time=1 # 慢查询判定时间
+    
+    # 方式二：全局变量设置
+    mysql> set global slow_query_log='ON'; # 是否开启慢查询
+    mysql> set global slow_query_log_file='/usr/local/mysql/data/slow.log'; # 指定慢查询日志路径
+    mysql> set global long_query_time=1; # 慢查询判定时间
+    ```
+- 二进制日志(binlog)
+    记录对mysql数据库执行了更改的所有操作，不包括select和show这样的操作，如果执行了update和delete这样的操作，但是没有引起数据库数据的任何变化，也可能被写入二进制日志文件中。
+    - 二进制文件的开启
+        默认情况下不开启二进制日志，开启时需要修改my.ini配置文件
+        ```
+        [mysqld]
+        bog-bin=/usr/local/mysql/data/bin.log # 指定二进制日志路径
+        ```
+    - 二进制日志的作用
+        1. 恢复：用户可以通过二进制文件的point-in-time进行恢复
+        2. 复制：通过执行二进制的文件在远程的机器上恢复数据
+        3. 审计：可以对二进制日志文件进行审计，判断是否有对数据库进行注入攻击
+
