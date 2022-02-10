@@ -82,3 +82,7 @@ mysql> SELECT @@transaction_isolation
 
 mysql> 
 ```
+### MySQL中varchar与char的区别以及varchar(50)中的50代表的涵义
+
+- varchar与char的区别 char是一种固定长度的类型，varchar则是一种可变长度的类型  
+- varchar(50)中50的涵义 最多存放50个字符，varchar(50)和(200)存储hello所占空间一样，但后者在排序时会消耗更多内存，因为order by col采用fixed_length计算col长度(memory引擎也一样) 
