@@ -83,32 +83,32 @@ mysql> SELECT @@transaction_isolation
 mysql> 
 ```
 ### MySQL中varchar与char的区别以及varchar(50)中的50代表的涵义
-
-- varchar与char的区别 char是一种固定长度的类型，varchar则是一种可变长度的类型  
-- varchar(50)中50的涵义 最多存放50个字符，varchar(50)和(200)存储hello所占空间一样，但后者在排序时会消耗更多内存，因为order by col采用fixed_length计算col长度(memory引擎也一样) 
+    - varchar与char的区别 char是一种固定长度的类型，varchar则是一种可变长度的类型  
+    - varchar(50)中50的涵义 最多存放50个字符，varchar(50)和(200)存储hello所占空间一样，但后者在排序时会消耗更多内存，因为order by col采用fixed_length计算col长度(memory引擎也一样) 
 
 ### Mysql日志文件种类
 - 错误日志(error log)
-查看错误日志 `show variables like 'log_error';`，默认情况下以服务器的主机名命名`hostname`.err，可以通过参数--log-error=[file_name]指定
-```
-mysql> show variables like 'log_error';
-+---------------+---------------------+
-| Variable_name | Value               |
-+---------------+---------------------+
-| log_error     | /var/log/mysqld.log |
-+---------------+---------------------+
-1 row in set (0.07 sec)
+    查看错误日志 `show variables like 'log_error';`，默认情况下以服务器的主机名命名`hostname`.err，可以通过参数--log-error=[file_name]指定
+    ```
+    mysql> show variables like 'log_error';
+    +---------------+---------------------+
+    | Variable_name | Value               |
+    +---------------+---------------------+
+    | log_error     | /var/log/mysqld.log |
+    +---------------+---------------------+
+    1 row in set (0.07 sec)
 
-mysql> 
-mysql> ps -ef|grep mysql
-mysql    11005  0.0  0.7 3477144 470428 ?      Sl    2020 319:54 /usr/local/mysql/bin/mysqld --basedir=/usr/local/mysql --datadir=/var/lib/mysql --plugin-dir=/usr/local/mysql/lib/plugin --user=mysql --log-error=/var/log/mysqld.log --pid-file=/var/lib/mysql/server348.pid --socket=/var/lib/mysql/mysql.sock
-mysql> 
-```
+    mysql> 
+    mysql> ps -ef|grep mysql
+    mysql    11005  0.0  0.7 3477144 470428 ?      Sl    2020 319:54 /usr/local/mysql/bin/mysqld --basedir=/usr/local/mysql --datadir=/var/lib/mysql --plugin-dir=/usr/local/mysql/lib/plugin --user=mysql --log-error=/var/log/mysqld.log --pid-file=/var/lib/mysql/server348.pid --socket=/var/lib/mysql/mysql.sock
+    mysql> 
+    ```
 - 查询日志(general log)
     查询日志分为一般查询日志和慢查询日志，通过参数long_query_time指定时间的值对其进行判定，如果在参数设定时间内完成查询，则为一般查询日志（建议关闭，因为太多），否则为慢查询日志。
 - 慢查询日志日志(slow query log)
     查询超出变量 long_query_time 指定时间值的为慢查询。mysql记录慢查询日志是在查询执行完毕且已经完全释放锁之后才记录的，因此慢查询日志记录的顺序和执行的SQL查询语句顺序可能会不一致
     查看慢查询日志：`show variables like '%slow_query_log%';`
+    
     开启慢查询方式：
     ```
     # 方式一：配置文件设置
