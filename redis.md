@@ -26,3 +26,37 @@
   解决的办法如下：
    - 对不存在的用户，在缓存中保存一个空对象进行标记，防止相同 ID 再次访问 DB。不过有时这个方法并不能很好解决问题，可能导致缓存中存储大量无用数据。
    - 使用 BloomFilter 过滤器，BloomFilter 的特点是存在性检测，如果 BloomFilter 中不存在，那么数据一定不存在；如果 BloomFilter 中存在，实际数据也有可能会不存在。非常适合解决这类的问题。
+
+### BloomFilter 过滤器
+- 和HyperLogLog超对数对比
+  超对数包含pfadd、pfcount两个命令，但是无法判断一个已知元素在不在HyperLogLog中
+- 什么是BloomFilter过滤器
+  BloomFilter过滤器是一个很长的二进制向量和一系列随机映射函数。布隆过滤器可以用于检索一个元素是否在一个集合中。它的优点是空间效率和查询时间都远远超过一般的算法，缺点是有一定的误识别率和删除困难。
+  BloomFilter过滤器时redis4.0版本以后增加的功能，默认不支持，需要添加插件才能适用
+- BloomFilter过滤器适用场景
+  - 大数据量
+  - 不要求准确率100%
+  - 需要查询元素是否已经存在
+  - 应用场景举例：
+    - 根据用户浏览记录给用户推荐内容
+    - 爬虫url去重
+    - 邮件垃圾箱
+    - 挡IO，不存在时再查库
+- BloomFilter过滤器常用命令
+  ```
+  bf.add key val
+  bf.existes key val
+  bf.madd key val1 val2
+  bf.mexistes key val1 val2 val3
+  ```
+- BloomFilter的准确率
+  - BloomFilter过滤器对已经见过的数据肯定不会误判，准确度100%
+  - BloomFilter过滤器对未知的数据的准确度默认为99%，可以根据实际需求修改，准确度要求越高，占用空间越大
+- 自定义设置BloomFilter的准确率
+  - 命令 `bf.reserve`
+  - 参数1 `key`
+  - 参数2 `error_rate` 默认0.01
+  - 参数3 `initial_size` 预计存在元素个数，如果实际数量超过预设数量，准确度会下降，默认值为100
+  
+  
+  
