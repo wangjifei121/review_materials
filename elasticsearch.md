@@ -28,3 +28,8 @@ ES中所有数据均衡的存储在集群中各个节点的分片中，会影响
    - 每一个分片数据文件小于30GB
    - 每一个索引中的一个分片对应一个节点
    - 节点数大于等于分片数
+
+### match、match_phrase和match_phrase_prefix的区别
+- match：用于执行全文查询的标准查询，包括模糊匹配和短语或接近查询。重要参数：控制Token之间的布尔关系：operator：or/and
+- match_phrase：与match查询类似，但用于匹配确切的短语或单词接近匹配。重要参数：Token之间的位置距离：slop 参数
+- match_phrase_prefix：与match_phrase查询类似，但是会对最后一个Token在倒排序索引列表中进行通配符搜索。重要参数：模糊匹配数控制：max_expansions 默认值50，最小值为1
