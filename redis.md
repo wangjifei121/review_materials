@@ -69,4 +69,86 @@
 - BloomFilter布隆过滤器图示
 ![image](https://user-images.githubusercontent.com/40445471/154433140-97311257-e9fe-46a8-ae74-a0d82fc7ba95.png)
 
-  
+### redis Geohash 基于地理位置
+  - Redis在3.2版本后增加了地理位置GEO模块， 意味着可以使用Redis来实现摩拜但这[附近的Mobike]、美团和饿了么[附近的餐馆]这样的功能了。
+  - GeoHash算法：业界比较通用的地理位置距离排序算法时GeoHash算法， Redis也使用了GeoHash算法。 GeoHash算法将二维的经纬度数据映射到一维的整数， 这样所有的元素都将挂在到一条线上， 距离靠近的二维坐标映射到一维后的点之间距离也会很接近。 当我们想要计算[附近的人]， 首先将目标位置映射到这条线上， 然后在这个一维的线上获取附近的点就可以了
+  - redis Geo命令
+    - geoadd 添加数据
+      
+      ```
+      127.0.0.1:6379> geoadd city 116.397128 39.916527 beijing
+      (integer) 1
+      127.0.0.1:6379> geoadd city 116.68572 39.50311 langfang
+      (integer) 1
+      127.0.0.1:6379> geoadd city 114.507132 37.06787 xingtai
+      (integer) 1
+      127.0.0.1:6379> geoadd city 116.75199 36.55358 jinan
+      (integer) 1
+      ```
+      
+     - geodist 计算两元素之间的距离，距离单位可以是m、km、ml、ft分别代表米、千米、英里和尺
+        
+        ```
+        127.0.0.1:6379> geodist city beijing xingtai km
+        "356.9957"
+        127.0.0.1:6379> geodist city beijing langfang km
+        "52.1934"
+        ```
+        
+     - geopos 可以获取集合中任意元素的经纬度坐标，可以一次获取多个
+          
+          ```
+          127.0.0.1:6379> geopos city beijing xingtai
+          1) 1) "116.39712899923324585"
+             2) "39.91652647362980844"
+          2) 1) "114.50713187456130981"
+             2) "37.06786995982209731"
+          ```
+          
+      - geohash 可以获取元素的经纬度编码字符串， 上面提到， 它是base32编码。 可以使用这个编码值取http://geohash.org/${hash}中进行直接定位， 它是geohash的标准编码值
+         
+         ```
+           127.0.0.1:6379> geohash city beijing
+           1) "wx4g0dtf9e0"
+           ```
+           
+      - georadiusbymember  它可以用来查询指定元素附近的其他元素
+          
+          ```
+          # 查询北京附近200km范围内的前两个城市正序排列
+          127.0.0.1:6379> georadiusbymember city beijing 200 km count 3 asc
+          1) "beijing"
+          2) "langfang"
+          
+          # 查询北京附近200km范围内的前两个城市倒序排列
+          127.0.0.1:6379> georadiusbymember city beijing 200 km count 3 desc
+          1) "langfang"
+          2) "beijing"
+          
+          # 三个可选参数withcoord(经纬度) withdist(距离) withhash(hash值) 用来携带附加参数
+          127.0.0.1:6379> georadiusbymember city beijing 200 km withcoord withdist withhash count 3 asc
+          1) 1) "beijing"
+             2) "0.0000"
+             3) (integer) 4069885548668386
+             4) 1) "116.39712899923324585"
+                2) "39.91652647362980844"
+          2) 1) "langfang"
+             2) "52.1934"
+             3) (integer) 4069137789659981
+             4) 1) "116.6857185959815979"
+                2) "39.50311091782047157"
+          ```
+      - georadius 根据坐标值来查询附近的元素
+          
+          ```
+          # 查询某个位置坐标500km以内的城市top4，并输出具体举例
+          127.0.0.1:6379> georadius city 117.07822 39.98246 500 km withdist count 4 asc
+          1) 1) "beijing"
+             2) "58.5358"
+          2) 1) "langfang"
+             2) "63.0035"
+          3) 1) "jinan"
+             2) "382.4432"
+          4) 1) "xingtai"
+             2) "393.8413"
+          ```
