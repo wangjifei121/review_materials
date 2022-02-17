@@ -57,6 +57,7 @@
   - 参数1 `key`
   - 参数2 `error_rate` 默认0.01
   - 参数3 `initial_size` 预计存在元素个数，如果实际数量超过预设数量，准确度会下降，默认值为100
-  
-  
+- BloomFilter布隆过滤器图示
+![image](https://user-images.githubusercontent.com/40445471/154433140-97311257-e9fe-46a8-ae74-a0d82fc7ba95.png)
+
   
