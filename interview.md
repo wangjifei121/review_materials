@@ -31,3 +31,7 @@
     `lsof -i |grep pid` `netstat -nap |grep pid`
   - 根据端口查进程 
     `lsof -i:port` `netstat -nap |grep port`
+## mysql sql执行过程
+  - 查询 权限校验 —> 查询缓存 —> 分析器 —> 优化器 —> 权限校验 —> 执行器 —> 引擎
+  - 更新 分析器 -> 权限校验 -> 执行器 —> 引擎 — > redo log prepare —> binlog —> redo log commit
+
