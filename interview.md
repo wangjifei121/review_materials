@@ -26,3 +26,8 @@
     - 501 Not Implemented 客户端试图使用一个服务器不支持的HTTP特性。
     - 502 Bad Gateway  只有HTTP代理会发送这个响应代码。它表明代理方面出现问题，或者代理与上行服务器之间出现问题，而不是上行服务器本身有问题
     - 503 Service Unavailable 此响应代码表明HTTP服务器正常，只是下层web服务服务不能正常工作
+## linux通过端口查进程
+  - 根据进程pid查端口
+    `lsof -i |grep pid` `netstat -nap |grep pid`
+  - 根据端口查进程 
+    `lsof -i:port` `netstat -nap |grep port`
