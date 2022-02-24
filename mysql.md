@@ -141,4 +141,8 @@ mysql>
    - 第一范式是最基本的范式。如果数据库表中的所有字段值都是不可分解的原子值，就说明该数据库表满足了第一范式
    - 第二范式在第一范式的基础之上更进一层。第二范式需要确保数据库表中的每一列都和主键相关，而不能只与主键的某一部分相关（主要针对联合主键而言）。也就是说在一个数据库表中，一个表中只能保存一种数据，不可以把多种数据保存在同一张数据库表中。
    - 第三范式需要确保数据表中的每一列数据都和主键直接相关，而不能间接相关
-    
+### sql执行顺序
+    - `select distinct s.id  from T t join  S s on t.id=s.id where t.name="Yrion" group by t.mobile having count(*)>2  order by s.create_time limit`
+![image](https://user-images.githubusercontent.com/40445471/155533725-9a9f18dd-a3ae-4083-a295-de4b8e92a7c2.png)
+### mysql整体的执行过程
+![image](https://user-images.githubusercontent.com/40445471/155534029-3825631f-91d0-4146-a088-42cf522ddb29.png)
