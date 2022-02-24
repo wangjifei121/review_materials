@@ -160,3 +160,5 @@
           4) 1) "xingtai"
              2) "393.8413"
           ```
+### redis实现分布式锁
+![image](https://user-images.githubusercontent.com/40445471/155542404-03175248-b29e-404e-af7e-d9fa58bc797b.png)
