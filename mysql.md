@@ -146,3 +146,21 @@ mysql>
 ![image](https://user-images.githubusercontent.com/40445471/155533725-9a9f18dd-a3ae-4083-a295-de4b8e92a7c2.png)
 ### mysql整体的执行过程
 ![image](https://user-images.githubusercontent.com/40445471/155534029-3825631f-91d0-4146-a088-42cf522ddb29.png)
+
+### Btree和B+tree数据结构图示
+ - Btree的构建过程图示
+![image](https://user-images.githubusercontent.com/40445471/156132614-72465612-d9bd-48f5-ac30-6cc2e43b6f78.png)
+
+![image](https://user-images.githubusercontent.com/40445471/156137646-e9f0e959-427f-401d-b9dc-96bd521e584b.png)
+
+ - B+tree数据结构图示
+    
+![image](https://user-images.githubusercontent.com/40445471/156137536-03550374-1da8-4135-8a66-4ae7df9ea78e.png)
+ - Btree和B+tree的区别
+    ```
+    - B+ 树非叶子节点上是不存储数据的，仅存储键值，而 B 树节点中不仅存储键值，也会存储数据。
+        之所以这么做是因为在数据库中页的大小是固定的，InnoDB 中页的默认大小是 16KB。
+        如果不存储数据，那么就会存储更多的键值，相应的树的阶数（节点的子节点树）就会更大，树就会更矮更胖，
+        如此一来我们查找数据进行磁盘的 IO 次数又会再次减少，数据查询的效率也会更快。
+    - 因为 B+ 树索引的所有数据均存储在叶子节点，而且数据是按照顺序排列的。
+    ```
