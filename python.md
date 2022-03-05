@@ -47,5 +47,57 @@ print(list(nums))
 ```
 ## 类的静态方法、普通方法和类方法
 - 静态方法: 用 @staticmethod 装饰的不带 self 参数的方法叫做静态方法，类的静态方法可以没有参数，可以直接使用类名调用。
-- 实例化方法: 默认有个self参数，且只能被对象调用。
-- 类方法: 默认有个 cls 参数，可以被类和对象调用，需要加上 @classmethod 装饰器。
+- 实例化方法: 默认有个self参数，且只能被实例化对象调用。
+- 类方法: 默认有个 cls 参数，可以被类对象和实例化对象调用，需要加上 @classmethod 装饰器
+```
+class Person:
+    _country = 'China'
+
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+
+    # 普通方法
+    # 只能被实例化对象调用
+    def get_age(self):
+        print(self.age)
+
+    # 类方法（通常作用为修改类内部属性使用）
+    # 类对象或实例化对象都可调用
+    @classmethod
+    def set_country(cls, country):
+        cls._country = country
+        print(cls._country)
+
+    # 静态方法
+    # 类对象或实例化对象都可调用
+    @staticmethod
+    def show_help():
+        h = '''
+            - init Person 
+            - get age by func get_age
+            - set country by func set_country
+            - show help by func show_help
+        
+        '''
+        print(h)
+
+# 类的初始化
+p = Person('wangjifei', 18)
+
+# 实例化对象调用静态方法
+p.show_help()
+# 类对象调用静态方法
+Person.show_help()
+
+# 实例化对象调用普通方法
+p.get_age()
+# 类对象调用普通方法（需要传入类实例对象）
+Person.get_age(p)
+
+# 实例化对象调用类方法
+p.set_country('Singapore')
+# 类对象调用类方法
+Person.set_country('Singapore')
+
+```
