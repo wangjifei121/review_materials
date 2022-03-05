@@ -101,3 +101,32 @@ p.set_country('Singapore')
 Person.set_country('Singapore')
 
 ```
+## python类的私有变量和方法
+- `__`双下划线开头的类属性或方法为私有方法，在类的内部，python使用一种 name mangling 技术，将私有方法替换成 _classname__membername格式
+```
+class Person:
+    __money = 10000000  # 私有属性 - 资产
+    __private_money = 100000  # 私有属性 - 私房钱
+
+    def __init__(self, name):
+        self.name = name
+
+    # 私有方法 - 总私产
+    def __all_money(self):
+        all_money = self.__money + self.__private_money
+        print(f'{self.name} 总资产={all_money}')
+
+
+# 实例化
+p = Person('wangjifei')
+
+# 获取普通属性
+print(p.name)
+# 获取私有属性 - 报错
+# print(p.__money)
+# 获取私有属性方法(__money -> _Person__money)
+print(p._Person__money)
+
+# 调用私有方法(__all_money -> _Person__all_money)
+p._Person__all_money()
+```
