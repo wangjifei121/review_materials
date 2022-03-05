@@ -36,3 +36,12 @@ add_func(3, 4)
  - list：可变动态数组
  - tuple：不可变容器
  - set：实现方式类似于dict
+
+## filter
+```
+nums = range(2, 20)
+for i in nums:
+    nums = filter(lambda x: x == i or x % i, nums)
+print(list(nums))
+
+```
