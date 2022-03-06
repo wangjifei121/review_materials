@@ -130,3 +130,28 @@ print(p._Person__money)
 # 调用私有方法(__all_money -> _Person__all_money)
 p._Person__all_money()
 ```
+
+## python上下文管理
+- 可以以一种更加优雅的方式，操作（创建/获取/释放）资源，如文件操作、数据库连接
+- 可以以一种更加优雅的方式，处理异常
+```
+class Resource():
+    def __enter__(self):
+        print('enter to resource')
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        print('exception handling')
+        print(exc_type)  # 异常类型
+        print(exc_val)  # 异常值
+        print(exc_tb)  # 异常的错误栈信息
+        return False  # True 异常已经被捕获 False 抛出异常
+
+    def operate(self):
+        li = []
+        print(li[2])
+
+
+with Resource() as res:
+    res.operate()
+```
