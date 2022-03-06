@@ -155,3 +155,51 @@ class Resource():
 with Resource() as res:
     res.operate()
 ```
+- contextlib第三方扩展包
+```
+import contextlib
+
+@contextlib.contextmanager
+def my_opener(file_name):
+    # __enter__方法
+    print('__enter__')
+    file_handler = open(file_name, 'r')
+
+    # 【重点】：yield
+    yield file_handler
+
+    # __exit__方法
+    print('__exit__')
+    file_handler.close()
+    return
+
+with my_opener('/Users/wangjifei/Desktop/NLP/CWTAP_FD/cwtap/asgi.py') as file_in:
+    for line in file_in:
+        print(line)
+```
+```
+# 异常处理方式
+import contextlib
+
+@contextlib.contextmanager
+def my_opener(file_name):
+    # __enter__方法
+    print(' __enter__')
+    file_handler = open(file_name, 'r')
+
+    try:
+        yield file_handler
+    except Exception as exc:
+        # deal with exception
+        print('the exception was {0}'.format(str(exc)))
+    finally:
+        print('__exit__')
+        file_handler.close()
+
+        return
+
+with my_opener('/Users/wangjifei/Desktop/NLP/CWTAP_FD/cwtap/asgi.py') as file_in:
+    for line in file_in:
+        line += 100
+
+```
