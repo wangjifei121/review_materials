@@ -43,38 +43,38 @@
      ```
   - 生成密钥
     每个git账户对应一对密钥
-   ```
-   (smartdot) (base) bogon:.ssh wangjifei$ cd ~/.ssh
-   (smartdot) (base) bogon:.ssh wangjifei$ ssh-keygen -t rsa -C "18500327026@163.com"
-   Generating public/private rsa key pair.
-   Enter file in which to save the key (/Users/wangjifei/.ssh/id_rsa): id_rsa_github
-   ```
-   如上提示表示可对生成的秘钥文件进行重命名，默认为 id_rsa 。
-   由于要配置多个账户，在此需要重命名以区分。例如：重命名为 id_rsa_github 。
-   设置密码可以直接按回车，直到秘钥生成。
-   在.ssh秘钥目录下可以看到两个文件 id_rsa_github 和 id_rsa_github.pub。
-   对于另外的gitLab 的账户，采用相同的步骤进行生成秘钥 id_rsa_gitlab 
-   
-   设置成功会显示如下：
-   ```
-    Your identification has been saved in id_rsa_github.
-    Your public key has been saved in id_rsa_github.pub.
-    The key fingerprint is:
-    SHA256:SGK8Gx7MeSrpMGQy4NAkBTXfZnIlLbdN+3v5jSA43Eo 18500327026@163.com
-    The key's randomart image is:
-    +---[RSA 2048]----+
-    |o+=   ...        |
-    | + + ..oo .      |
-    |o . * *o + .     |
-    |+  + X .. o      |
-    |o+  B o S  .     |
-    |+. o * . o  .    |
-    |o o +   E o .. . |
-    | + .   . o ...o..|
-    |  .     .    ...o|
-    +----[SHA256]-----+
-    (smartdot) (base) bogon:.ssh wangjifei$ 
-   ```
+     ```
+     (smartdot) (base) bogon:.ssh wangjifei$ cd ~/.ssh
+     (smartdot) (base) bogon:.ssh wangjifei$ ssh-keygen -t rsa -C "18500327026@163.com"
+     Generating public/private rsa key pair.
+     Enter file in which to save the key (/Users/wangjifei/.ssh/id_rsa): id_rsa_github
+     ```
+     如上提示表示可对生成的秘钥文件进行重命名，默认为 id_rsa 。
+     由于要配置多个账户，在此需要重命名以区分。例如：重命名为 id_rsa_github 。
+     设置密码可以直接按回车，直到秘钥生成。
+     在.ssh秘钥目录下可以看到两个文件 id_rsa_github 和 id_rsa_github.pub。
+     对于另外的gitLab 的账户，采用相同的步骤进行生成秘钥 id_rsa_gitlab 
+     设置成功会显示如下：
+     ```
+      Your identification has been saved in id_rsa_github.
+      Your public key has been saved in id_rsa_github.pub.
+      The key fingerprint is:
+      SHA256:SGK8Gx7MeSrpMGQy4NAkBTXfZnIlLbdN+3v5jSA43Eo 18500327026@163.com
+      The key's randomart image is:
+      +---[RSA 2048]----+
+      |o+=   ...        |
+      | + + ..oo .      |
+      |o . * *o + .     |
+      |+  + X .. o      |
+      |o+  B o S  .     |
+      |+. o * . o  .    |
+      |o o +   E o .. . |
+      | + .   . o ...o..|
+      |  .     .    ...o|
+      +----[SHA256]-----+
+      (smartdot) (base) bogon:.ssh wangjifei$ 
+     ```
+ 
  - 将私钥添加到本地
     ```
     ssh-add ~/.ssh/id_rsa_github // 将GitHub私钥添加到本地
